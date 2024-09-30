@@ -1,0 +1,52 @@
+
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+.markdown-preview.markdown-preview {
+  // modify your style here
+  p, li, dd{
+    text-align:justify;
+    hyphens:auto;
+  }
+  body {
+    counter-reset: figures;
+    counter-reset: tables;
+  }
+
+  figure {
+      counter-increment: figures;
+      text-align: center;
+  }
+
+  figcaption {
+      font-style: normal;
+      font-weight: bold;
+      display: inherit;
+      text-align: center;
+      font-size: 90%;
+  }
+
+  figcaption:before {
+      content: 'Figura ' counter(figures) ' - ';
+  }
+
+  table {
+      counter-increment: tables;
+  }
+
+  table>caption {
+      font-style: normal;
+      font-weight: bold;
+      caption-side: top;
+      text-align: center;
+      font-size: 90%;
+      background: none;
+      border-bottom: none;
+      color: #172b4d;
+  }
+
+  table>caption:before {
+      content: 'Tabela ' counter(tables) ' - ';
+  }
+
+}
