@@ -25,7 +25,7 @@ public class SelvaPlayer1PieceFactory implements SelvaPieceFamilyFactory {
 
     @Override
     public SelvaPiece createLion() {
-        return new JumpDecorator(new BasicSelvaPiece("L", PlayerPiecesFactory.getPlayerPieces("white"), AnimalType.LION));
+        return new BasicSelvaPiece("L", PlayerPiecesFactory.getPlayerPieces("white"), AnimalType.LION);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class SelvaPlayer1PieceFactory implements SelvaPieceFamilyFactory {
 
     @Override
     public SelvaPiece createTiger() {
-        return new JumpDecorator (new BasicSelvaPiece("T", PlayerPiecesFactory.getPlayerPieces("white"), AnimalType.TIGER));
+        return new BasicSelvaPiece("T", PlayerPiecesFactory.getPlayerPieces("white"), AnimalType.TIGER);
     }
 
     @Override

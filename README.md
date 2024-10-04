@@ -569,34 +569,21 @@ enum AnimalType{
 interface MoveStrategy{
     boolean move()
 }
-interface CaptureStrategy{
-    boolean canCapture()
-}
 class DefaultMoveStrategy{
     boolean move()
-}
-class DefaultCaptureStrategy{
-    boolean canCapture()
 }
 class RatMoveStrategy{
     boolean move()
 }
-class RatCaptureStrategy{
-    boolean canCapture()
-}
-class ElephantCaptureStrategy{
-    boolean canCapture()
+class JumpMoveStrategy{
+    boolean move()
 }
 
-AnimalType o- CaptureStrategy
-MoveStrategy -o AnimalType
-
-CaptureStrategy <|-- DefaultCaptureStrategy
-CaptureStrategy <|-- RatCaptureStrategy
-CaptureStrategy <|-- ElephantCaptureStrategy
+AnimalType o- MoveStrategy
 
 MoveStrategy <|-- DefaultMoveStrategy
 MoveStrategy <|-- RatMoveStrategy
+MoveStrategy <|-- JumpMoveStrategy
 
 hide empty attributes
 hide empty methods
@@ -609,17 +596,17 @@ hide empty methods
     - é configurado com os objetos ConcreteStrategy;
     - mantém uma referência para um objeto Strategy, sendo esta passada pelo construtor ao instanciar o tipo do animal;
 
-- **Strategy** (MoveStrategy, CaptureStrategy)
+- **Strategy** (MoveStrategy)
     - define uma interface comum para todos os algoritmos suportados. AnimalType usa esta interface para definir o movimento de cada animal.
 
-- **ConcreteStrategy** (DefaultMoveStrategy, RatMoveStrategy, DefaultCaptureStrategy, RatCaptureStrategy, ElephantCaptureStrategy)
+- **ConcreteStrategy** (DefaultMoveStrategy, RatMoveStrategy, , JumpMoveStrategy)
     - implementa o algoritmo usando a interface de Strategy.
 
 ### Codigo do Framework
 
 A interface MoveStrategy define o contrato para as estratégias de movimento no jogo Selva. Ela estabelece o método move, que deve ser implementado por classes concretas para definir como diferentes tipos de peças se movem no tabuleiro.
 
-@import "src/java/Selva/Pecas/MoveStrategy.java"
+@import "src/java/Pecas/MoveStrategy.java"
 
 A classe DefaultMoveStrategy implementa a interface MoveStrategy e fornece uma lógica de movimento padrão para as peças no tabuleiro. Ela verifica se a nova posição é válida, se a casa destino é acessível e se a peça pode capturar uma peça adversária. Essa classe serve como base para as peças que não possuem comportamentos de movimento especiais, simplificando a lógica do jogo e garantindo que as regras básicas de movimentação sejam seguidas.
 
@@ -629,18 +616,11 @@ Já a classe RatMoveStrategy estende a lógica de movimento para o rato, impleme
 
 @import "src/java/Selva/Pecas/RatMoveStrategy.java"
 
-Para a estratégia de captura, utilizamos a classe DefaultCaptureStrategy, que implementa a interface CaptureStrategy e define a lógica padrão para a captura de peças. Ela verifica se uma peça pode capturar outra, considerando a força de cada animal das peças e as condições de captura. Essa implementação é utilizada por peças que não possuem regras de captura especializadas, oferecendo uma maneira consistente e direta de gerenciar a interação entre as peças no tabuleiro.
+A classe JumpMoveStrategy altera o movimento do leão e do tigre. Ela adiciona a habilidade especial de salto para peças como o leão e o tigre, permitindo que essas peças saltem sobre casas com água, desde que não haja um rato nelas.
 
-@import "src/java/Selva/Pecas/CaptureStrategy.java"
+@import "src/java/Selva/Pecas/JumpMoveStrategy.java"
 
-A classe RatCaptureStrategy é uma implementação específica da interface CaptureStrategy para o rato. Ela define regras de captura que são únicas para esse tipo de peça, permitindo que o rato capture apenas outros ratos e o elefante. Já a classe ElephantCaptureStrategy fornece uma lógica de captura que permite que ele domine outras peças, com exceção do rato.
-
-@import "src/java/Selva/Pecas/RatCaptureStrategy.java"
-@import "src/java/Selva/Pecas/ElephantCaptureStrategy.java"
-
-Esses objetos são instanciados na criação de cada objeto AnimalType, que define o tipo de animal de cada peça. A classe AnimalType desempenha um papel fundamental na definição do comportamento das peças do jogo Selva, interagindo diretamente com as classes MoveStrategy e CaptureStrategy. Assim, as classes DefaultMoveStrategy, RatMoveStrategy, DefaultCaptureStrategy, RatCaptureStrategy e ElephantCaptureStrategy são projetadas para serem utilizadas em conjunto com a enumeração AnimalType, permitindo que cada animal utilize a estratégia de movimento e captura que melhor se alinha às suas características e regras de jogo.
-
-Essa estrutura modular facilita a manutenção e a extensão do jogo, pois novos comportamentos podem ser facilmente adicionados ou modificados sem alterar as classes existentes, assegurando uma experiência de jogo dinâmica e variada.
+Essas classes são instanciadas quando o movimento de mover é chamado, a depender do animal que está realizando o movimento. Essa estrutura modular facilita a manutenção e a extensão do jogo, pois novos comportamentos podem ser facilmente adicionados ou modificados sem alterar as classes existentes, assegurando uma experiência de jogo dinâmica e variada.
 
 ## Command
 

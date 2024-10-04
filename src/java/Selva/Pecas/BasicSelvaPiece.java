@@ -9,7 +9,7 @@ public class BasicSelvaPiece implements SelvaPiece {
     private final String symbol;
     private boolean inWater;
 
-    private MoveStrategy moveStrategy;
+    private MoveStrategy moveStrategy = new DefaultMoveStrategy();
     private int currentRow;
     private int currentColumn;
 
@@ -18,7 +18,6 @@ public class BasicSelvaPiece implements SelvaPiece {
         this.playerPieces = playerPieces;
         this.symbol = symbol;
         this.inWater = false;
-        this.moveStrategy = animalType.getMove();
     }
 
     @Override
@@ -41,6 +40,14 @@ public class BasicSelvaPiece implements SelvaPiece {
 
     @Override
     public boolean move(int newRow, int newColumn, Board board) {
+        if(this.getAnimalType().equals("RAT")){
+            RatMoveStrategy strategy = new RatMoveStrategy();
+            this.moveStrategy = strategy;
+        }
+        if((this.getAnimalType().equals("LION")) || (this.getAnimalType().equals("TIGER"))){
+            JumpMoveStrategy strategy = new JumpMoveStrategy();
+            this.moveStrategy = strategy;
+        }
         return moveStrategy.move(this, newRow, newColumn, board);
     }
 
