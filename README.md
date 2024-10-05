@@ -399,17 +399,17 @@ Ao realizar essa refatoração, além de reduzir o número de classes, o código
 ## Decorator
 
 ### Intenção
-Acoplar novos comportamentos para objetos ao colocá-los dentro de invólucros de objetos que contém os comportamentos.
+Acoplar novas características para objetos ao colocá-los dentro de invólucros de objetos que contém as características.
 ### Estrutura
 ```plantuml
 @startuml
 interface SelvaPiece
 class BasicSelvaPiece
 interface SelvaPieceDecorator
-class JumpDecorator
+class BlackSelvaPieceDecorator
 
 SelvaPiece <|-- BasicSelvaPiece
-SelvaPieceDecorator <|-- JumpDecorator
+SelvaPieceDecorator <|-- BlackSelvaPieceDecorator
 SelvaPieceDecorator o- SelvaPiece
 @enduml
 ```
@@ -419,21 +419,19 @@ SelvaPieceDecorator o- SelvaPiece
    - *Concrete Component* (BasicSelvaPiece)
       - É a implementação concreta da interface SelvaPiece. Representa as características comuns a todas as peças, e as responsabilidades adicionais serão atribuídas de forma dinâmica.
    - *Decorator* (SelvaPieceDecorator)
-      - Mantém uma referência a um objeto SelvaPiece e implementa a mesma interface. Sua função principal é delegar operações para o componente e permitir que novos comportamentos sejam adicionados.
-   - *Concrete Decorator* (JumpDecorator)
-      - Implementa a funcionalidade adicionail pular e a adiciona aos objetos SelvaPiece, estendendo o comportamento do componente concreto original.
+      - Mantém uma referência a um objeto SelvaPiece e implementa a mesma interface. Sua função principal é delegar operações para o componente e permitir que novas características sejam adicionadas.
+   - *Concrete Decorator* (BlackSelvaPieceDecorator)
+      - Decora o símbolo dos objetos SelvaPiece, estendendo o comportamento do componente concreto original.
         
 ### Codigo do Framework
 
-A interface SelvaPieceDecorator é uma extensão da interface SelvaPiece, criada para suportar o padrão de projeto Decorator. Ela permite que peças possam ser "decoradas" com funcionalidades adicionais, como movimentos especiais ou outras habilidades, sem modificar a estrutura interna da peça original. A principal função dessa interface é garantir que qualquer decorator implementado mantenha as capacidades básicas da peça original, ao mesmo tempo em que adiciona novos comportamentos de forma flexível e modular.
+A interface SelvaPieceDecorator é uma extensão da interface SelvaPiece, criada para suportar o padrão de projeto Decorator. Ela permite que peças possam ser "decoradas" com funcionalidades adicionais, sem modificar a estrutura interna da peça original. A principal função dessa interface é garantir que qualquer decorator implementado mantenha as capacidades básicas da peça original, ao mesmo tempo em que adiciona novos comportamentos de forma flexível e modular.
 
 @import "src/java/Selva/Pecas/SelvaPieceDecorator.java"
 
-A classe JumpDecorator é um exemplo de implementação concreta do padrão Decorator, utilizando a interface SelvaPieceDecorator. Ela adiciona a habilidade especial de salto para peças como o leão e o tigre, permitindo que essas peças saltem sobre casas com água, desde que não haja um rato nelas. O JumpDecorator envolve uma instância de SelvaPiece, delegando o comportamento normal à peça decorada e adicionando a lógica de salto quando aplicável, sem alterar o comportamento básico da peça original.
+A classe BlackSelvaPieceDecorator é um exemplo de implementação concreta do padrão Decorator, utilizando a interface SelvaPieceDecorator. Ela decora o símbolo das peças, que são criadas originalmente brancas. O BlackSelvaPieceDecorator envolve uma instância de SelvaPiece, na qual ela altera o símbolo da própria peça para uma letra maiúscula, sem alterar o símbolo inicial básico da peça original, apenas adicionando uma nova representação visual.
 
-@import "src/java/Selva/Pecas/JumpDecorator.java"
-
-Com essa implementação, o JumpDecorator não altera o comportamento do método move da classe base, mas apenas calcula a nova posição e a passa para ele. Assim, você mantém a lógica do movimento intacta e adiciona a capacidade de saltar sobre casas de água.
+@import "src/java/Selva/Pecas/BlackSelvaPieceDecorator.java"
 
 ## Flyweight
 
@@ -815,6 +813,32 @@ builder.build() // após construir o seu tabuleiro, utilize esse método para
 - Para criar um flyweight das suas peças, basta implementar o código do seu flyweight seguindo o padrão abaixo, lembrando que o framework já disponibiliza um flyweight para a cor das peças.
 
 @import "src/java/Tanques/Pecas/TankPieceFlyweightFactory.java"
+
+- Caso você opte por não utilizar um flyweight e criar a decoração de cada peça através de um novo objeto, basta apenas implementar a interface Piece e extender a classe implementada, decorando as suas peças pretas na criação das mesmas.
+
+- Por padrão, o framework contém as classes PieceDecorator e BlackPieceDecorator, não sendo necessária a criação de novas classes a menos que a peça do seu jogo tenha algum atributo ou método adicional.
+
+- A classe que implementa o Piece é responsável por garantir que os métodos da sua peça permaneçam intactos. Portanto, os retornos devem ser os próprios métodos da referência da sua peça.
+
+@import "img/Screenshot_3.png"
+
+- Crie uma classe que estenda a classe criada anteriormente, caso necessário.
+
+@import "img/Screenshot_4.png"
+
+- A criação da sua segunda família de peças seria muito semelhante a primeira, exceto que as peças precisariam ser decoradas para terem seu visual atualizado.
+
+```java
+//primeira família de peças:
+public SelvaPiece createCat() {
+    return new BasicSelvaPiece(AnimalType.CAT.getSymbol(), PlayerPiecesFactory.getPlayerPieces("white"), AnimalType.CAT);
+}
+
+//segunda família de peças:
+public SelvaPiece createCat() {
+        return new BlackSelvaPieceDecorator(new BasicSelvaPiece());
+    }
+```
 
 ### Passo 5 - Criando a Fachada do Jogo
 
