@@ -1,6 +1,5 @@
 import Selva.SelvaGame;
 import Tanques.TanksBattleFacade;
-import Tanques.TanksBattleGame;
 
 public class Testes {
 

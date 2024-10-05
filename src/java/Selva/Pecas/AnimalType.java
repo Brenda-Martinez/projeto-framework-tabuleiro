@@ -1,21 +1,23 @@
 package Selva.Pecas;
 
 public enum AnimalType {
-    CAT(2),
-    DOG(4),
-    ELEPHANT(8),
-    LEOPARD(5),
-    LION(7),
-    RAT(1),
-    TIGER(6),
-    WOLF(3);
+    CAT(2, "C"),
+    DOG(4, "D"),
+    ELEPHANT(8, "E"),
+    LEOPARD(5, "P"),
+    LION(7, "L"),
+    RAT(1,"R"),
+    TIGER(6, "T"),
+    WOLF(3, "W");
 
     private final int forca;
     private boolean isTrapped;
+    private String symbol;
 
-    AnimalType(int forca) {
+    AnimalType(int forca, String symbol) {
         this.forca = forca;
         this.isTrapped = false;
+        this.symbol = symbol;
     }
     
     // Métodos gerais para todos os animais
@@ -42,6 +44,14 @@ public enum AnimalType {
 
     public boolean getTrapped() {
         return isTrapped;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
     
 }
